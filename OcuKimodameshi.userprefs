@@ -1,14 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FPSBackProcess.cs">
     <Files>
-      <File FileName="Assets\Scripts\FPSBackProcess.cs" Line="5" Column="22" />
+      <File FileName="Assets\Scripts\FPSBackProcess.cs" Line="84" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="G:\VBProgs\unity\trunk\OcuKimodameshi\Assets\Scripts\FPSBackProcess.cs" line="55" />
-      <Breakpoint file="G:\VBProgs\unity\trunk\OcuKimodameshi\Assets\Scripts\FPSBackProcess.cs" line="118" />
+      <Breakpoint file="G:\VBProgs\unity\trunk\OcuKimodameshi\Assets\Scripts\FPSBackProcess.cs" line="122" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

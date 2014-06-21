@@ -10,17 +10,19 @@ using System;
 
 
 public class FPSBackProcess : MonoBehaviour {
-	private FileLogger fileLogger;
-	private string pusherAppKey = "fe4a15e1a9a1df8517e5";
-	private PusherClient pusherClient;
-	private PusherChannel pusherChannel;
+
+	public FileLogger fileLogger;
+	public string pusherAppKey = "fe4a15e1a9a1df8517e5";
+	public string channelName = "channel";
+	public PusherClient pusherClient;
+	public PusherChannel pusherChannel;
 
 	// Use this for initialization
 	void Start () {
 		// setup options
 		PusherOptions options = new PusherOptions();
-		options.EncryptionEnabled = true;
-		options.MaskingEnabled = true;
+		options.EncryptionEnabled = false;
+		options.MaskingEnabled = false;
 		
 		// init pusher client
 		this.pusherClient = new PusherClient("Pusher", options);
@@ -33,8 +35,7 @@ public class FPSBackProcess : MonoBehaviour {
 		
 		// monitor all events
 		this.pusherClient.BindAll(this.pusherClient_BindAll);
-		
-		this.pusherChannel = null;
+
 		Connect();
 	}
 	void OnApplicationQuit()
@@ -64,21 +65,27 @@ public class FPSBackProcess : MonoBehaviour {
 	{
 		this.pusherClient.Connect(this.pusherAppKey);
 	}
-	
+
+	private void pusherChannell_BindAll(string eventName, string eventData)
+	{
+		//Logger.WriteInfo("Main", "BindAll Event: " + eventName + ", Data: " + eventData);
+	}
+
 	
 	private void pusherClient_BindAll(string eventName, string eventData)
 	{
-		Logger.WriteInfo("Main", "BindAll Event: " + eventName + ", Data: " + eventData);
+		//Logger.WriteInfo("Main", "BindAll Event: " + eventName + ", Data: " + eventData);
 	}
 	
 	private void pusherClient_ConnectionChanged(PusherState pusherState)
 	{
-		Logger.WriteInfo("Main", "Connection Status: " + pusherState.Name());
+		//Logger.WriteInfo("Main", "Connection Status: " + pusherState.Name());
 		//this.UpdateUI((int)pusherState, null, null);
 	}
 	
 	private void pusherClient_Connected()
 	{
+		this.pusherChannel = pusherClient.Subscribe(channelName, new PusherDelegates.ChannelStatusCallback(pusherChannel_StatusChanged));
 		//this.UpdateUI((int)PusherState.Connected, null, null);
 	}
 	
@@ -87,15 +94,15 @@ public class FPSBackProcess : MonoBehaviour {
 		//this.UpdateUI((int)PusherState.Disconnected, null, null);
 	}
 	
-	private void pusherClient_Error(string message, string stackTrace = null)
+	private void pusherClient_Error(string message, string stackTrace)
 	{
-		Logger.WriteError("Main", message, stackTrace);
+		//Logger.WriteError("Main", message, stackTrace);
 		//this.UpdateUI(null, null, "Error: " + message);
 	}
 	
 	private void pusherChannel_StatusChanged(PusherChannelState channelState)
 	{
-		Logger.WriteInfo("Main", "Channel Status: " + channelState.Name());
+		//Logger.WriteInfo("Main", "Channel Status: " + channelState.Name());
 		//this.UpdateUI(null, (int)channelState, null);
 		if (channelState == PusherChannelState.Subscribed)
 		{
@@ -109,7 +116,9 @@ public class FPSBackProcess : MonoBehaviour {
 	
 	private void pusherChannel_BindAll(string eventName, string eventData)
 	{
-		Logger.WriteInfo("Main", "Channel Event: " + eventName + ", Data: " + eventData);
+		//Logger.WriteInfo("Main", "Channel Event: " + eventName + ", Data: " + eventData);
+		Console.WriteLine (eventName + "/" + eventData);
+
 	}
 
 	#region ILogger implementation
@@ -121,7 +130,7 @@ public class FPSBackProcess : MonoBehaviour {
 		Console.WriteLine (msgType + "/" + date + "/" + time + "/" + source + "/" + message + "/" + stackTrace);
 	}
 	
-	public void WriteError(string source, string message, string stackTrace = "")
+	public void WriteError(string source, string message, string stackTrace)
 	{
 		this.WriteToLog("Error", DateTime.Now.ToString("MM/dd/yyyy"), DateTime.Now.ToString("HH:mm:ss.fff"), source, message, stackTrace);
 	}
