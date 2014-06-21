@@ -119,6 +119,7 @@ public class FPSBackProcess : MonoBehaviour {
 		//Logger.WriteInfo("Main", "Channel Event: " + eventName + ", Data: " + eventData);
 		Console.WriteLine (eventName + "/" + eventData);
 
+
 	}
 
 	#region ILogger implementation
