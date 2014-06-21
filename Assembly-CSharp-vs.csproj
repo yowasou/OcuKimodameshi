@@ -53,17 +53,17 @@
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
- <Reference Include="websocket-sharp">
- <HintPath>Assets\Plugins\websocket-sharp.dll</HintPath>
- </Reference>
  <Reference Include="JDI.Common">
  <HintPath>Assets\Plugins\JDI.Common.dll</HintPath>
+ </Reference>
+ <Reference Include="JDI.Pusher.Client">
+ <HintPath>Assets\Plugins\JDI.Pusher.Client.dll</HintPath>
  </Reference>
  <Reference Include="JDI.WebSocket.Client">
  <HintPath>Assets\Plugins\JDI.WebSocket.Client.dll</HintPath>
  </Reference>
- <Reference Include="JDI.Pusher.Client">
- <HintPath>Assets\Plugins\JDI.Pusher.Client.dll</HintPath>
+ <Reference Include="websocket-sharp">
+ <HintPath>Assets\Plugins\websocket-sharp.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

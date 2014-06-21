@@ -2,138 +2,139 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using WebSocketSharp;
+using JDI.Common;
+using JDI.Common.Logger;
+using JDI.Pusher.Client;
+using JDI.Common.Utils;
 using System;
 
 
 public class FPSBackProcess : MonoBehaviour {
-	//受信のデリゲート
-	public Action<int, int, string> ReceivePacketAction;
-	int m_fromId = 0;
-	public List<string> m_buttonList = new List<string>();
-	
-	Queue<string> m_tmpQueue = new Queue<string>();
-	
-	//受信リスト
-	private List<string> m_receiveDataList = new List<string>();
-	
-	WebSocket m_webSocket;
-	bool m_IsConnect = false;
-
+	private FileLogger fileLogger;
+	private string pusherAppKey = "fe4a15e1a9a1df8517e5";
+	private PusherClient pusherClient;
+	private PusherChannel pusherChannel;
 
 	// Use this for initialization
 	void Start () {
+		// setup options
+		PusherOptions options = new PusherOptions();
+		options.EncryptionEnabled = true;
+		options.MaskingEnabled = true;
+		
+		// init pusher client
+		this.pusherClient = new PusherClient("Pusher", options);
+		
+		// attach event handlers
+		this.pusherClient.ConnectionChanged += new PusherDelegates.ConnectionChangedEventHandler(pusherClient_ConnectionChanged);
+		this.pusherClient.Connected += new PusherDelegates.ConnectedEventHandler(pusherClient_Connected);
+		this.pusherClient.Disconnected += new PusherDelegates.DisconnectedEventHandler(pusherClient_Disconnected);
+		this.pusherClient.Error += new PusherDelegates.ErrorEventHandler(pusherClient_Error);
+		
+		// monitor all events
+		this.pusherClient.BindAll(this.pusherClient_BindAll);
+		
+		this.pusherChannel = null;
 		Connect();
 	}
-	
-	void Awake () {
-		
-		// 仮データ生成
-		m_buttonList = new List<string>();
-		m_buttonList.Add("aaaaaaaaaaaa");
-		m_buttonList.Add("bbbbbbbbbbb");
-		m_buttonList.Add("ccccccccccc");
-		m_buttonList.Add("ddddddddddd");
-		
-		m_fromId = int.Parse(DateTime.Now.ToString("MdHms"));
-	}
-	
-	
-	
-	
-	void Update () {
-		while ( 0 < m_tmpQueue.Count)
+	void OnApplicationQuit()
+	{
+		if (this.pusherClient != null)
 		{
-			ReceiveData(m_tmpQueue.Dequeue());
+			this.pusherClient.UnBindAll(this.pusherClient_BindAll);
+			this.pusherClient.Disconnect();
+			this.pusherClient.Dispose();
 		}
+		this.pusherClient = null;
+		
+		if (this.fileLogger != null)
+		{
+			this.fileLogger.Close();
+			this.fileLogger.Dispose();
+		}
+		this.fileLogger = null;
+	}
+	void Update () {
+
 	}
 	
 	
 	//接続処理
 	private void Connect()
 	{
-		m_webSocket = new WebSocket("ws://ws.pusherapp.com:80/app/fe4a15e1a9a1df8517e5&version=2.2&protocol=5");
-		//接続完了
-		m_webSocket.OnOpen += (sender, e) =>
-		{
-			Debug.Log("m_webSocket.OnOpen");
-			m_IsConnect = true;
-			//デリゲート登録
-			ReceivePacketAction += ReceivedMessage;
-		};
-		
-		//受信したとき
-		m_webSocket.OnMessage += (sender, e) =>
-		{
-			string message = e.Data;
-			Debug.Log(string.Format("OnMessage {0}", message));
-			m_tmpQueue.Enqueue(message);
-		};
-		
-		//閉じたとき
-		m_webSocket.OnClose += (sender, e) =>
-		{
-			Debug.Log(string.Format("OnClosed {0}", e.Reason));
-			m_IsConnect = false;
-		};
-		
-		m_webSocket.Connect();
+		this.pusherClient.Connect(this.pusherAppKey);
 	}
 	
 	
-	
-	
-	//切断
-	private void Close()
+	private void pusherClient_BindAll(string eventName, string eventData)
 	{
-		//デリゲートをクリア
-		ReceivePacketAction = null;
-		m_tmpQueue.Clear();
-		//接続を切断
-		m_webSocket.Close();
+		Logger.WriteInfo("Main", "BindAll Event: " + eventName + ", Data: " + eventData);
 	}
 	
-	
-	
-	
-	void Send(string stream)
+	private void pusherClient_ConnectionChanged(PusherState pusherState)
 	{
-		stream = "{ \"type\": " + (int)Type.SEND_DATA + " , \"from\": " + m_fromId + " , \"to\": " + m_fromId + " , \"msg\": \"" + stream + "\" }";
-		
-		Debug.Log("send data. stream=" + stream);
-		m_webSocket.Send(stream);
+		Logger.WriteInfo("Main", "Connection Status: " + pusherState.Name());
+		//this.UpdateUI((int)pusherState, null, null);
 	}
 	
-	
-	enum Type
+	private void pusherClient_Connected()
 	{
-		REGISTER = 1,
-		SEND_DATA = 2,
+		//this.UpdateUI((int)PusherState.Connected, null, null);
 	}
-
 	
-	//受信
-	void ReceiveData(string receivePackets)
+	private void pusherClient_Disconnected()
 	{
-		if (receivePackets != null && receivePackets.Length != 0)
+		//this.UpdateUI((int)PusherState.Disconnected, null, null);
+	}
+	
+	private void pusherClient_Error(string message, string stackTrace = null)
+	{
+		Logger.WriteError("Main", message, stackTrace);
+		//this.UpdateUI(null, null, "Error: " + message);
+	}
+	
+	private void pusherChannel_StatusChanged(PusherChannelState channelState)
+	{
+		Logger.WriteInfo("Main", "Channel Status: " + channelState.Name());
+		//this.UpdateUI(null, (int)channelState, null);
+		if (channelState == PusherChannelState.Subscribed)
 		{
-			foreach (string stream in receivePackets.Split('|'))
-			{
-				int id = 0;
-				int type = 0;
-				// 登録しておいたデリゲートを実行する
-				ReceivePacketAction(type, id, stream);
-			}
+			this.pusherChannel.BindAll(this.pusherChannel_BindAll);
+		}
+		else if (this.pusherChannel != null)
+		{
+			this.pusherChannel.UnBindAll(this.pusherChannel_BindAll);
 		}
 	}
-
-	// タイプにあわせて処理を振り分ける
-	void ReceivedMessage(int type, int id, string jsonData)
+	
+	private void pusherChannel_BindAll(string eventName, string eventData)
 	{
-		Debug.Log("Received jsonData=" + jsonData);
-		
-		m_receiveDataList.Add(jsonData);
-		if(m_receiveDataList.Count > 5)
-			m_receiveDataList.RemoveAt(0);
+		Logger.WriteInfo("Main", "Channel Event: " + eventName + ", Data: " + eventData);
 	}
+
+	#region ILogger implementation
+	
+	private delegate void WriteLineCallback(string msgType, string date, string time, string source, string message, string stackTrace);
+	
+	private void WriteToLog(string msgType, string date, string time, string source, string message, string stackTrace)
+	{
+		Console.WriteLine (msgType + "/" + date + "/" + time + "/" + source + "/" + message + "/" + stackTrace);
+	}
+	
+	public void WriteError(string source, string message, string stackTrace = "")
+	{
+		this.WriteToLog("Error", DateTime.Now.ToString("MM/dd/yyyy"), DateTime.Now.ToString("HH:mm:ss.fff"), source, message, stackTrace);
+	}
+	
+	public void WriteInfo(string source, string message)
+	{
+		this.WriteToLog("Info", DateTime.Now.ToString("MM/dd/yyyy"), DateTime.Now.ToString("HH:mm:ss.fff"), source, message, "");
+	}
+	
+	public void WriteDebug(string source, string message)
+	{
+		this.WriteToLog("Debug", DateTime.Now.ToString("MM/dd/yyyy"), DateTime.Now.ToString("HH:mm:ss.fff"), source, message, "");
+	}
+	
+	#endregion
 }
