@@ -1,8 +1,8 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\OVR\Scripts\OVRCrosshair.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FPSBackProcess.cs">
     <Files>
-      <File FileName="Assets\Scripts\FPSBackProcess.cs" Line="10" Column="1" />
+      <File FileName="Assets\Scripts\FPSBackProcess.cs" Line="95" Column="4" />
       <File FileName="Assets\OVR\Scripts\OVRCrosshair.cs" Line="127" Column="31" />
       <File FileName="Assets\OVR\Scripts\OVRPlayerController.cs" Line="411" Column="14" />
     </Files>

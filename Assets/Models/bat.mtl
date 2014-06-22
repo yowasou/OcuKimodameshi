@@ -1,0 +1,46 @@
+# Blender MTL File: 'bat.blend'
+# Material Count: 4
+
+newmtl BODY
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.009412 0.009412 0.009412
+Ks 0.449020 0.449020 0.449020
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\yowasou\Downloads\BAT\BATBODY.JPG
+map_Bump C:\\Users\\yowasou\\Downloads\\BAT\\BATBODY.JPG
+map_d C:\\Users\\yowasou\\Downloads\\BAT\\BATBODYO.JPG
+
+newmtl EAR
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.449020 0.449020 0.449020
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\yowasou\Downloads\BAT\BATEAR.JPG
+map_Bump C:\\Users\\yowasou\\Downloads\\BAT\\BATEAR.JPG
+
+newmtl EYE
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.125490 0.028235
+Ks 0.449020 0.449020 0.449020
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\yowasou\Downloads\BAT\BATEYE.JPG
+
+newmtl HEAD
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.449020 0.449020 0.449020
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd C:\Users\yowasou\Downloads\BAT\BATHEAD.JPG
+map_Bump C:\\Users\\yowasou\\Downloads\\BAT\\BATHEAD.JPG
