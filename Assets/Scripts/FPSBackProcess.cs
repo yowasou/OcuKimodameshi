@@ -8,14 +8,24 @@ using JDI.Pusher.Client;
 using JDI.Common.Utils;
 using System;
 
-
 public class FPSBackProcess : MonoBehaviour {
-
+	public enum EventType
+	{
+		none,
+		light_off,
+		light_tenmetu,
+		light_rev
+	}
+	public EventType et = EventType.none;
 	public FileLogger fileLogger;
 	public string pusherAppKey = "fe4a15e1a9a1df8517e5";
 	public string channelName = "channel";
 	public PusherClient pusherClient;
 	public PusherChannel pusherChannel;
+	public Light HandLight = null;
+	public float HandLightMax = 0.8f;
+
+	private int lightFrame = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -35,6 +45,8 @@ public class FPSBackProcess : MonoBehaviour {
 		
 		// monitor all events
 		this.pusherClient.BindAll(this.pusherClient_BindAll);
+
+		HandLight = (Light)GameObject.Find("Spotlight").GetComponent("Light");
 
 		Connect();
 	}
@@ -56,7 +68,38 @@ public class FPSBackProcess : MonoBehaviour {
 		this.fileLogger = null;
 	}
 	void Update () {
-
+		if (et == EventType.light_off) 
+		{
+			HandLight.intensity = 0f;
+			et = EventType.light_rev;
+		}
+		if (et == EventType.light_rev) 
+		{
+			HandLight.intensity = HandLight.intensity + 0.005f;
+			if (HandLight.intensity >= HandLightMax)
+			{
+				et = EventType.none;
+				HandLight.intensity = HandLightMax;
+			}
+		}
+		if (et == EventType.light_tenmetu) 
+		{
+			lightFrame++;
+			if (lightFrame % 20 == 0)
+			{
+				HandLight.intensity = HandLightMax;
+			}
+			else if (lightFrame % 10 == 0)
+			{
+				HandLight.intensity = 0;
+			}
+			else if (lightFrame >= 120)
+			{
+				lightFrame = 0;
+				HandLight.intensity = 0f;
+				et = EventType.light_rev;
+			}
+		}
 	}
 	
 	
@@ -113,13 +156,25 @@ public class FPSBackProcess : MonoBehaviour {
 			this.pusherChannel.UnBindAll(this.pusherChannel_BindAll);
 		}
 	}
-	
+
+	/// <summary>
+	/// Pushers the channel_ bind all.
+	/// チャンネルで何か起きたらここに
+	/// </summary>
+	/// <param name="eventName">Event name.</param>
+	/// <param name="eventData">Event data.</param>
 	private void pusherChannel_BindAll(string eventName, string eventData)
 	{
 		//Logger.WriteInfo("Main", "Channel Event: " + eventName + ", Data: " + eventData);
 		Console.WriteLine (eventName + "/" + eventData);
-
-
+		if (eventName == "light_off") 
+		{
+			et = EventType.light_off;
+		}
+		if (eventName == "light_tenmetu") 
+		{
+			et = EventType.light_tenmetu;
+		}
 	}
 
 	#region ILogger implementation

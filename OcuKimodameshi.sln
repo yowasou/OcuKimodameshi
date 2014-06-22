@@ -5,6 +5,8 @@ Project("{857CB851-EEAC-0378-BAF7-59FE674A861B}") = "OcuKimodameshi", "Assembly-
 EndProject
 Project("{857CB851-EEAC-0378-BAF7-59FE674A861B}") = "OcuKimodameshi", "Assembly-CSharp.csproj", "{57B032A3-66A7-1E88-6AD8-9F632C589AE0}"
 EndProject
+Project("{857CB851-EEAC-0378-BAF7-59FE674A861B}") = "OcuKimodameshi", "Assembly-CSharp-Editor.csproj", "{9A13A0AE-C145-4555-2755-2D6153336354}"
+EndProject
 Project("{857CB851-EEAC-0378-BAF7-59FE674A861B}") = "OcuKimodameshi", "Assembly-UnityScript-firstpass.unityproj", "{087B5679-EC42-6A54-AF19-15E3F980BFFE}"
 EndProject
 Global
@@ -21,6 +23,10 @@ Global
 		{57B032A3-66A7-1E88-6AD8-9F632C589AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57B032A3-66A7-1E88-6AD8-9F632C589AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57B032A3-66A7-1E88-6AD8-9F632C589AE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A13A0AE-C145-4555-2755-2D6153336354}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A13A0AE-C145-4555-2755-2D6153336354}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A13A0AE-C145-4555-2755-2D6153336354}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A13A0AE-C145-4555-2755-2D6153336354}.Release|Any CPU.Build.0 = Release|Any CPU
 		{087B5679-EC42-6A54-AF19-15E3F980BFFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{087B5679-EC42-6A54-AF19-15E3F980BFFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{087B5679-EC42-6A54-AF19-15E3F980BFFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,7 +35,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-										GlobalSection(MonoDevelopProperties) = preSolution
+																		GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
