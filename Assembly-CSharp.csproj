@@ -69,6 +69,7 @@
      <Compile Include="Assets\OVRAgent\Scripts\Internal\OVRAgentDevice.cs" />
      <Compile Include="Assets\OVRAgent\Scripts\Internal\OVRAgentRenderer.cs" />
      <Compile Include="Assets\OVRAgent\Scripts\OVRAgent.cs" />
+     <Compile Include="Assets\Scripts\BatFly.cs" />
      <Compile Include="Assets\Scripts\FPSBackProcess.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />

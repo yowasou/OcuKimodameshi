@@ -16,7 +16,15 @@ public class FPSBackProcess : MonoBehaviour {
 		light_tenmetu,
 		light_rev
 	}
+	public enum EventTypeOne
+	{
+		none,
+		koumori
+	}
+	public GameObject batPrefab;
 	public EventType et = EventType.none;
+	public EventTypeOne eto = EventTypeOne.none;
+
 	public FileLogger fileLogger;
 	public string pusherAppKey = "fe4a15e1a9a1df8517e5";
 	public string channelName = "channel";
@@ -24,6 +32,7 @@ public class FPSBackProcess : MonoBehaviour {
 	public PusherChannel pusherChannel;
 	public Light HandLight = null;
 	public float HandLightMax = 0.8f;
+	public int flame = 0;
 
 	private int lightFrame = 0;
 
@@ -68,6 +77,15 @@ public class FPSBackProcess : MonoBehaviour {
 		this.fileLogger = null;
 	}
 	void Update () {
+		flame++;
+		if (flame >= 60) 
+		{
+			flame = 0;
+		}
+		if (flame == 0) 
+		{
+			OnOneSecond();
+		}
 		if (et == EventType.light_off) 
 		{
 			HandLight.intensity = 0f;
@@ -100,8 +118,30 @@ public class FPSBackProcess : MonoBehaviour {
 				et = EventType.light_rev;
 			}
 		}
+		ProcessEventTypeOne();
 	}
-	
+	/// <summary>
+	/// 非継続型イベント処理
+	/// </summary>
+	private void ProcessEventTypeOne()
+	{
+		if (eto == EventTypeOne.koumori)
+		{
+			CallBat();
+			eto = EventTypeOne.none;
+		}
+	}
+
+	/// <summary>
+	/// 1秒おきに発生するイベント
+	/// </summary>
+	private void OnOneSecond()
+	{
+	}
+	private void CallBat()
+	{
+		var go = Instantiate(batPrefab, new Vector3 (0, 0, 0), Quaternion.identity);
+	}
 	
 	//接続処理
 	private void Connect()
@@ -175,6 +215,11 @@ public class FPSBackProcess : MonoBehaviour {
 		{
 			et = EventType.light_tenmetu;
 		}
+		if (eventName == "koumori") 
+		{
+			eto = EventTypeOne.koumori;
+		}
+
 	}
 
 	#region ILogger implementation

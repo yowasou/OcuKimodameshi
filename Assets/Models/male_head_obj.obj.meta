@@ -1,15 +1,25 @@
 fileFormatVersion: 2
-guid: 3e1cfa3e32e401c4e9c71dde08255c9b
+guid: 56acb14730a2d2941a1b2157062eb237
 ModelImporter:
   serializedVersion: 15
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: default
-    400000: //RootNode
-    400002: default
-    2300000: default
-    3300000: default
-    4300000: default
+    100000: Head
+    100002: LeftEye
+    100004: //RootNode
+    100006: RightEye
+    400000: Head
+    400002: LeftEye
+    400004: //RootNode
+    400006: RightEye
+    2300000: Head
+    2300002: LeftEye
+    2300004: RightEye
+    3300000: Head
+    3300002: LeftEye
+    3300004: RightEye
+    4300000: Head
+    4300002: LeftEye
+    4300004: RightEye
     9500000: //RootNode
   materials:
     importMaterials: 1
