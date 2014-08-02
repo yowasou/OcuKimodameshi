@@ -19,9 +19,11 @@ public class FPSBackProcess : MonoBehaviour {
 	public enum EventTypeOne
 	{
 		none,
-		koumori
+		koumori,
+		namakubi
 	}
 	public GameObject batPrefab;
+	public GameObject namakubiPrefab;
 	public EventType et = EventType.none;
 	public EventTypeOne eto = EventTypeOne.none;
 
@@ -35,28 +37,30 @@ public class FPSBackProcess : MonoBehaviour {
 	public int flame = 0;
 
 	private int lightFrame = 0;
+	GameObject player = null;
 
 	// Use this for initialization
 	void Start () {
+
+
+		HandLight = (Light)GameObject.Find("Spotlight").GetComponent("Light");
+		player = GameObject.Find("First Person Controller");
+
 		// setup options
 		PusherOptions options = new PusherOptions();
 		options.EncryptionEnabled = false;
 		options.MaskingEnabled = false;
-		
 		// init pusher client
 		this.pusherClient = new PusherClient("Pusher", options);
-		
+
 		// attach event handlers
 		this.pusherClient.ConnectionChanged += new PusherDelegates.ConnectionChangedEventHandler(pusherClient_ConnectionChanged);
 		this.pusherClient.Connected += new PusherDelegates.ConnectedEventHandler(pusherClient_Connected);
 		this.pusherClient.Disconnected += new PusherDelegates.DisconnectedEventHandler(pusherClient_Disconnected);
 		this.pusherClient.Error += new PusherDelegates.ErrorEventHandler(pusherClient_Error);
-		
+
 		// monitor all events
 		this.pusherClient.BindAll(this.pusherClient_BindAll);
-
-		HandLight = (Light)GameObject.Find("Spotlight").GetComponent("Light");
-
 		Connect();
 	}
 	void OnApplicationQuit()
@@ -130,6 +134,10 @@ public class FPSBackProcess : MonoBehaviour {
 			CallBat();
 			eto = EventTypeOne.none;
 		}
+		if (eto == EventTypeOne.namakubi) {
+			CallNamakubi();
+			eto = EventTypeOne.none;
+		}
 	}
 
 	/// <summary>
@@ -142,11 +150,19 @@ public class FPSBackProcess : MonoBehaviour {
 	{
 		var go = Instantiate(batPrefab, new Vector3 (0, 0, 0), Quaternion.identity);
 	}
-	
+	private void CallNamakubi()
+	{
+		GameObject namakubiPos = GameObject.Find("namakubiPos");
+		GameObject go = Instantiate(namakubiPrefab, namakubiPos.transform.position, Quaternion.identity) as GameObject;
+		go.transform.Rotate (player.transform.rotation.eulerAngles);
+		go.transform.Rotate (180f, 0, 0);
+	}
 	//接続処理
 	private void Connect()
 	{
+
 		this.pusherClient.Connect(this.pusherAppKey);
+		Console.WriteLine ("connected");
 	}
 
 	private void pusherChannell_BindAll(string eventName, string eventData)
@@ -219,6 +235,9 @@ public class FPSBackProcess : MonoBehaviour {
 		{
 			eto = EventTypeOne.koumori;
 		}
+		if (eventName == "namakubi") {
+			eto = EventTypeOne.namakubi;
+				}
 
 	}
 

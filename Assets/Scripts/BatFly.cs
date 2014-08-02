@@ -10,7 +10,9 @@ public class BatFly : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		player = GameObject.Find("OVRPlayerController");
+		//player = GameObject.Find("OVRPlayerController");
+		player = GameObject.Find("First Person Controller");
+
 		controller = (CharacterController)GetComponent("CharacterController");
 		//Vector3 fo = player.transform.TransformDirection(Vector3.forward);
 		Vector3 fo = player.transform.position;
