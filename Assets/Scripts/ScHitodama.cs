@@ -1,39 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BatFly : MonoBehaviour {
-	GameObject player = null;
+public class ScHitodama : MonoBehaviour {
+	float speed = 1f;
 	float radious = 0;
-	float speed = 10f;
-	Vector3 moveDirection = Vector3.zero;
 	CharacterController controller = null;
 
-	// Use this for initialization
 	void Start () {
-		//player = GameObject.Find("OVRPlayerController");
-		player = GameObject.Find("First Person Controller");
-
 		controller = (CharacterController)GetComponent("CharacterController");
-		//Vector3 fo = player.transform.TransformDirection(Vector3.forward);
+		GameObject player = GameObject.Find("First Person Controller");
+
 		Vector3 fo = player.transform.position;
 		transform.position = fo;
 		transform.rotation = Camera.main.transform.rotation;
 		transform.Rotate(transform.TransformDirection(new Vector3 (0, 90f, 0)));
 		//正面距離、高さ、右の距離
-		controller.Move(transform.TransformDirection(new Vector3(-8f, 0, 10f)));
+		controller.Move(transform.TransformDirection(new Vector3(-8f, 0.5f, 10f)));
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		Vector3 moveDirection = Vector3.zero;
 		radious++;
 		if (radious < 10) 
 		{
-			moveDirection = new Vector3(0f, 1f, -1f);
+			moveDirection = new Vector3(0f, 2f, -1f);
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 		} else 
 		{
-			moveDirection = new Vector3(0f, -1f, -1f);
+			moveDirection = new Vector3(0f, -2f, -1f);
 			moveDirection = transform.TransformDirection(moveDirection);
 			moveDirection *= speed;
 		}

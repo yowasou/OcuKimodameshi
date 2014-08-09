@@ -20,9 +20,11 @@ public class FPSBackProcess : MonoBehaviour {
 	{
 		none,
 		koumori,
-		namakubi
+		namakubi,
+		hitodama
 	}
 	public GameObject batPrefab;
+	public GameObject hitodamaPrefab;
 	public GameObject namakubiPrefab;
 	public EventType et = EventType.none;
 	public EventTypeOne eto = EventTypeOne.none;
@@ -138,6 +140,10 @@ public class FPSBackProcess : MonoBehaviour {
 			CallNamakubi();
 			eto = EventTypeOne.none;
 		}
+		if (eto == EventTypeOne.hitodama) {
+			CallHitodama();
+			eto = EventTypeOne.none;
+		}
 	}
 
 	/// <summary>
@@ -146,9 +152,16 @@ public class FPSBackProcess : MonoBehaviour {
 	private void OnOneSecond()
 	{
 	}
+
+	private void CallHitodama()
+	{
+		var go = Instantiate(hitodamaPrefab, new Vector3 (0, 0, 0), Quaternion.identity);
+		Destroy (go, 15);
+	}
 	private void CallBat()
 	{
 		var go = Instantiate(batPrefab, new Vector3 (0, 0, 0), Quaternion.identity);
+		Destroy (go, 10);
 	}
 	private void CallNamakubi()
 	{
@@ -156,6 +169,7 @@ public class FPSBackProcess : MonoBehaviour {
 		GameObject go = Instantiate(namakubiPrefab, namakubiPos.transform.position, Quaternion.identity) as GameObject;
 		go.transform.Rotate (player.transform.rotation.eulerAngles);
 		go.transform.Rotate (180f, 0, 0);
+		Destroy (go, 20);
 	}
 	//接続処理
 	private void Connect()
@@ -239,6 +253,9 @@ public class FPSBackProcess : MonoBehaviour {
 		if (eventName == "namakubi") {
 			eto = EventTypeOne.namakubi;
 				}
+		if (eventName == "hitodama") {
+			eto = EventTypeOne.hitodama;
+		}
 
 	}
 

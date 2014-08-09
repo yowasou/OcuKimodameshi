@@ -71,6 +71,7 @@
      <Compile Include="Assets\OVRAgent\Scripts\OVRAgent.cs" />
      <Compile Include="Assets\Scripts\BatFly.cs" />
      <Compile Include="Assets\Scripts\FPSBackProcess.cs" />
+     <Compile Include="Assets\Scripts\ScHitodama.cs" />
      <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
      <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
      <None Include="Assets\Standard Assets\Water (Basic)\Sources\Shaders\FX-Water Simple.shader" />
