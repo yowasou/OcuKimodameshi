@@ -160,9 +160,10 @@ public class FPSBackProcess : MonoBehaviour {
 	//接続処理
 	private void Connect()
 	{
-
+		Debug.Log(this.pusherAppKey);
 		this.pusherClient.Connect(this.pusherAppKey);
-		Console.WriteLine ("connected");
+		Debug.Log(this.pusherAppKey);
+		Debug.Log("connected");
 	}
 
 	private void pusherChannell_BindAll(string eventName, string eventData)
