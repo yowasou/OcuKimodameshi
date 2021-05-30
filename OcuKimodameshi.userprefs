@@ -1,11 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\FPSBackProcess.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\UnityChanTest\Assets\UnityChan\Scripts\UnityChanControlScriptWithRgidBody.cs">
     <Files>
-      <File FileName="OcuKimodameshi.sln" Line="1" Column="1" />
-      <File FileName="Assets\ScHitodama.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FPSBackProcess.cs" Line="164" Column="20" />
-      <File FileName="Assets\Scripts\BatFly.cs" Line="1" Column="1" />
+      <File FileName="..\UnityChanTest\Assets\UnityChan\Scripts\UnityChanControlScriptWithRgidBody.cs" Line="161" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
